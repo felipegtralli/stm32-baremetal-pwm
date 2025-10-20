@@ -7,7 +7,7 @@ static void system_init(void);
 static void clock_init(void);
 static void gpio_init(void);
 static void timer2_init(void);
-static void delay(uint32_t delay);
+static void delay(volatile uint32_t delay);
 
 int main(void) {
 	system_init();
@@ -22,7 +22,7 @@ int main(void) {
         }
 
         TIM2->CCR1 = duty_cycle;
-        delay(100U);
+        delay((volatile uint32_t)100U);
     }
 }
 
@@ -91,7 +91,7 @@ static void timer2_init(void) {
     TIM2->CR1 |= TIM_CR1_CEN; // counter enabled
 }
 
-static void delay(uint32_t delay) {
+static void delay(volatile uint32_t delay) {
     for(uint32_t i = 0; i < delay; i++) {
         for(uint32_t j = 0; j < delay; j++);
     }
